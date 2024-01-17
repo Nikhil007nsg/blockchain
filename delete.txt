@@ -1,0 +1,17 @@
+##########how to get down blockchain deployement
+
+
+***Delete all yaml file in blockchain file
+
+***kubectl delete -f .
+
+****Delete pv and pvc yaml also
+
+#####then go to /mnt/nfsclientshare file
+
+
+****Delete first 1- channel-artifacts folder
+                 2 - IN Organization delete OrdererOrganization and peerOrganization
+                 3 - state folder
+                 4 - system gensis-block folder
+                 5 - wallet folder

@@ -1,0 +1,56 @@
+n a Kubernetes cluster created with kubeadm, certificates are managed by the Kubernetes Certificate Authority (CA). To modify the Subject Alternative Names (SANs) in the certificates, you'll need to provide a custom kubeadm-config.yaml file during the kubeadm init or kubeadm join process. Here's a basic example of how you can include additional SANs:
+
+
+
+***Create a kubeadm-config.yaml file with the desired SANs:
+
+
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+kubernetesVersion: stable
+apiServer:
+  certSANs:
+    - "worker-1"
+    - "172.27.22.61"
+    - "additional-name.example.com"
+    
+    
+ Adjust the certSANs field to include the necessary SANs. The values can be DNS names or IP addresses.
+
+Initialize or join the cluster using the kubeadm command with the custom configuration file:
+
+
+**********kubeadm init --config=kubeadm-config.yaml
+
+
+**********kubeadm join <control-plane-host>:<control-plane-port> --token <token> --discovery-token-ca-cert-hash sha256:<hash> --config=kubeadm-config.yaml
+
+
+
+#######for crating new token of join command
+
+********kubeadm token create
+qu077a.wqahtbv3ct6ax0pe
+
+*******openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+
+d47fb4fed1c07b7cddd7aaf35341839d5bcd45a34fda716dfe48b2013a37885c
+   
+*********kubeadm join <control-plane-host>:<control-plane-port> --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+
+kubeadm join 172.27.22.62:6443 --token qu077a.wqahtbv3ct6ax0pe \
+	--discovery-token-ca-cert-hash sha256:d47fb4fed1c07b7cddd7aaf35341839d5bcd45a34fda716dfe48b2013a37885c
+
+kubeadm join 172.27.22.62:6443 --token --discovery-token-ca-cert-hash sha256:<hash>
+
+
+####from worker node delete flannel network also if u want join node again and again so you must delete flannel network and cni network
+
+sudo ip link delete flannel.1
+sudo ip link delete cni0
+
+###so u can join again to master node....
+kubeadm join 172.27.22.62:6443 --token c3heee.e2icutew57cg0u7i \
+	--discovery-token-ca-cert-hash sha256:d47fb4fed1c07b7cddd7aaf35341839d5bcd45a34fda716dfe48b2013a37885c
+
+
