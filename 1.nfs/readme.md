@@ -28,3 +28,21 @@
 
 1. mkdir nfs_clientshare
 2. sudo mount -o nolocks -t nfs <IP>:/mnt/nfs_share ./nfs_clientshare
+
+
+# move or copy prerequisites in nfs_clientshare
+
+1 - cp -R prerequsites/* /mnt/nfs_clientshare/
+
+2 - sudo chmod +x /mnt/nfs_clientshare/scripts/*  ...( If it is not change here change from nfs_share)
+
+
+cd /mnt/nfs_share
+
+chmod +x scripts/ -R
+
+mkdir organizations
+
+chmod 777 organizations/ -R
+
+cp -r fabric-ca organizations
