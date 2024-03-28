@@ -5,7 +5,7 @@
 3. sudo mkdir -p /mnt/nfs_share
 4. sudo chown -R nobody:nogroup /mnt/nfs_share/
 5. sudo chmod 777 /mnt/nfs_share/
-6. echo "/mnt/nfs_share1 \*(rw,sync,no_subtree_check,insecure)" | sudo tee -a /etc/exports
+6. echo "/mnt/nfs_share \*(rw,sync,no_subtree_check,insecure)" | sudo tee -a /etc/exports
 7. sudo exportfs -a
 8. sudo systemctl restart nfs-kernel-server
 
